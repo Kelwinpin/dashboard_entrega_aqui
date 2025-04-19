@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { MaskInput } from "@/components/inputs/maskInput"
 import axios from "axios"
+import { toast } from "react-toastify"
 
 export default function Auth() {
     const form = useForm({
@@ -20,7 +21,9 @@ export default function Auth() {
 
     async function onSubmit(values) {
         values.cnpj = values.cnpj.replace(/\D/g, '');
-        const response = await axios.post(`${import.meta.env.VITE_API_URL}/login/dashboard`, values)
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/login/dashboard`, values).catch(error => {
+            toast.error(`${error.response.data.error}`)
+        })
         const data = response.data
         console.log(data)
     }
