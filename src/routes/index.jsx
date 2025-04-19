@@ -1,8 +1,11 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'; // Importando o React Router
-
 // Componente de exemplo para a Home
 function Home() {
-  return <h1>Home Page</h1>;
+  return( 
+  <div className="App">
+    <h1>Usando o shadcn/ui no JSX</h1>
+  </div>
+  );
 }
 
 // Componente de exemplo para o About
