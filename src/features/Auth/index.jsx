@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input"
 import { MaskInput } from "@/components/inputs/maskInput"
 import axios from "axios"
 import { toast } from "react-toastify"
+import { storage } from "@/tools/storage"
 
 export default function Auth() {
     const form = useForm({
@@ -25,7 +26,7 @@ export default function Auth() {
             toast.error(`${error.response.data.error}`)
         })
         const data = response.data
-        console.log(data)
+        storage.setToken(data.token)
     }
 
     return (
@@ -42,7 +43,7 @@ export default function Auth() {
                             <FormItem>
                                 <FormLabel>CNPJ</FormLabel>
                                 <FormControl>
-                                    <MaskInput placeholder="CNPJ" dataMaska="000.000.000/0000-00" {...field} />
+                                    <MaskInput placeholder="CNPJ" dataMaska="00.000.000/0000-00" {...field} />
                                 </FormControl>
                             </FormItem>
                         )}
