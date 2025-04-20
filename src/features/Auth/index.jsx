@@ -34,9 +34,10 @@ export default function Auth() {
             className='
                 flex flex-col items-center justify-center gap-4 p-8 
                 text-center border-2 border-solid border-primary rounded-md
+                bg-white
             '
         >
-            <h1 className='text-md font-bold'>
+            <h1 className='text-md font-medium'>
                 Bem vindo ao Dashboard Entrega Aqui
             </h1>
             <Form {...form}>
@@ -48,7 +49,7 @@ export default function Auth() {
                             <FormItem>
                                 <FormLabel>CNPJ</FormLabel>
                                 <FormControl>
-                                    <MaskInput placeholder="CNPJ" dataMaska="00.000.000/0000-00" {...field} />
+                                    <MaskInput placeholder="CNPJ" dataMaska="00.000.000/0000-00"{...field} />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -60,7 +61,7 @@ export default function Auth() {
                             <FormItem>
                                 <FormLabel>Login</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Login" {...field} />
+                                    <Input placeholder="Login" className="border border-solid border-primary" {...field} />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -72,7 +73,7 @@ export default function Auth() {
                             <FormItem>
                                 <FormLabel>Senha</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Senha" type="password" {...field} />
+                                    <Input placeholder="Senha" type="password" className="border border-solid border-primary" {...field} />
                                 </FormControl>
                             </FormItem>
                         )}
