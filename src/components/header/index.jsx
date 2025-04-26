@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Search, SheetIcon, PlusCircle } from "lucide-react"
 
-export default function Header({entity = "", search = () => {}}) {
+export default function Header({entity = "", search = () => {}, add = () => {}}) {
     return (
        <header className="w-full flex flex-row items-center justify-between gap-3">
             <div className="flex flex-row items-center justify-between gap-1">
@@ -12,7 +12,7 @@ export default function Header({entity = "", search = () => {}}) {
                 </Button>
             </div>
             <div className="flex flex-row items-center justify-between gap-4">
-                <Button className="bg-blue-900 text-white cursor-pointer hover:bg-blue-950">
+                <Button className="bg-blue-900 text-white cursor-pointer hover:bg-blue-950" onClick={() => add()}>
                     Adicionar {entity}
                     <PlusCircle className="ml-1" />
                 </Button>
