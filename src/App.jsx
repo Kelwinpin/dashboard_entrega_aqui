@@ -9,6 +9,7 @@ import Auth from './features/Auth';
 import AuthLayout from './layouts/Login';
 import Home from './features/Home';
 import SidebarLayout from './layouts/Sidebar';
+import Products from './features/Products';
 
 function App() {
   const queryClient = new QueryClient();
@@ -22,6 +23,10 @@ function App() {
 
         <Route element={<SidebarLayout />} >
           <Route path="home" element={<Home />} />
+        </Route>
+
+        <Route element={<SidebarLayout />} >
+          <Route path="produtos" element={<Products />} />
         </Route>
 
         <Route path="*" element={<h1>404: página não encontrada</h1>} />
