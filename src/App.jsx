@@ -8,6 +8,7 @@ import { ToastContainer } from 'react-toastify';
 import Auth from './features/Auth';
 import AuthLayout from './layouts/Login';
 import Home from './features/Home';
+import SidebarLayout from './layouts/Sidebar';
 
 function App() {
   const queryClient = new QueryClient();
@@ -19,7 +20,7 @@ function App() {
           <Route path="login" element={<Auth />} />
         </Route>
 
-        <Route element={<Home />} >
+        <Route element={<SidebarLayout />} >
           <Route path="home" element={<Home />} />
         </Route>
 
