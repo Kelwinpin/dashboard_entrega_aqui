@@ -34,9 +34,11 @@ export default function Products() {
     
     return (
         isLoadingProducts ? <Loader /> :
-        <div className="flex flex-col items-center justify-center gap-4 p-8 text-center">
+        <div class="container mx-auto px-4 py-8">
            <Header entity="produto" search={() => {}} add={() => setIsOpen(true)} />
-            {products && products.rows.map(product => <ItemProduct key={product.id} product={product} />)}
+            <div class="space-y-4 mt-3">
+                {products && products.rows.map(product => <ItemProduct key={product.id} product={product} />)}
+            </div>
             {
                 isOpen && <FormProduct onClose={() => setIsOpen(false)} entity="produto" onSubmit={onSubmit} />
             }
