@@ -7,6 +7,7 @@ import { Routes, Route } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify';
 import Auth from './features/Auth';
 import AuthLayout from './layouts/Login';
+import Home from './features/Home';
 
 function App() {
   const queryClient = new QueryClient();
@@ -14,14 +15,14 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Routes>
-        {/* todas essas rotas usarão MainLayout */}
-
-        {/* todas essas rotas usarão AuthLayout */}
         <Route element={<AuthLayout />}>
           <Route path="login" element={<Auth />} />
         </Route>
 
-        {/* rota “catch‐all” para 404, sem layout ou com layout próprio */}
+        <Route element={<Home />} >
+          <Route path="home" element={<Home />} />
+        </Route>
+
         <Route path="*" element={<h1>404: página não encontrada</h1>} />
       </Routes>
       <ToastContainer 

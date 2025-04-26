@@ -14,11 +14,14 @@ import { MaskInput } from "@/components/inputs/maskInput"
 import axios from "axios"
 import { toast } from "react-toastify"
 import { storage } from "@/tools/storage"
+import { useNavigate } from 'react-router-dom';
 
 export default function Auth() {
     const form = useForm({
         resolver: zodResolver(loginSchema),
     })
+
+    const navigate = useNavigate()
 
     async function onSubmit(values) {
         values.cnpj = values.cnpj.replace(/\D/g, '');
@@ -27,6 +30,7 @@ export default function Auth() {
         })
         const data = response.data
         storage.setToken(data.token)
+        navigate('/home')
     }
 
     return (
@@ -78,7 +82,7 @@ export default function Auth() {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" className="w-full bg-red-700 text-white">
+                    <Button type="submit" className="w-full bg-red-700 text-white cursor-pointer">
                         Entrar
                     </Button>
                 </form>
