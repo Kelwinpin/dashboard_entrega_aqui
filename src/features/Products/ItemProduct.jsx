@@ -8,15 +8,27 @@ import {
 import { EllipsisVertical, Lock, Pencil, LockOpen } from "lucide-react"
 
 export default function ItemProduct({product}) {
+
+    const getStatus = () => {
+        if (product.deletedAt) {
+            return "bg-red-200 text-red-600 rounded-full px-2"
+        } else {
+            return "bg-green-200 text-green-600 rounded-full px-2"
+        }
+    }
+
     return (
         <div class="bg-white p-4 rounded-lg md:flex justify-between gap-4 md:items-center border border-solid border-gray-300 shadow-md shadow-black">
             <div class="flex flex-col md:flex-row md:items-center w-full md:w-4/12 my-3 md:my-0">
                 <p className="text-lg font-semibold">{product.name}</p>
             </div>
-            <div class="flex items-center gap-2 w-full md:w-2/12 my-3 md:my-0">
+            <div class="flex items-center gap-2 w-full md:w-4/12 my-3 md:my-0">
+                <div className={`${getStatus()} text-sm`}>{product.deletedAt ? "Inativo" : "Ativo"}</div>
+            </div>
+            <div class="flex items-center gap-2 w-full md:w-4/12 my-3 md:my-0">
                 <p className="text-sm font-semibold">Estoque: {product.amount}</p>
             </div>
-            <div class="flex items-center gap-2 w-full md:w-2/12 my-3 md:my-0">
+            <div class="flex items-center gap-2 w-full md:w-4/12 my-3 md:my-0">
                 <p className="text-sm font-semibold">Preço: {product.amount}</p>
             </div>
             <div class="flex justify-end md:pr-3 w-full md:w-1/12 my-3 md:my-0">
