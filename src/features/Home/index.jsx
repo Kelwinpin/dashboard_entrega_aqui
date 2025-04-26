@@ -3,7 +3,6 @@ import { storage } from "@/tools/storage"
 
 export default function Home() {
     const company = storage.getDecodedToken().company;
-    console.log("🚀 ~ Home ~ company:", company)
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-8 text-center rounded-md bg-white items-center justify-center">
