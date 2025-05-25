@@ -84,7 +84,7 @@ export default function Products() {
         isLoadingProducts ? <Loader /> :
         <div class="container mx-auto px-4 py-8">
            <Header entity="produto" search={() => {}} add={() => setIsOpen(true)} />
-
+            
             <div class="space-y-4 mt-3">
                 {products && products.rows.map(product => 
                     <ItemProduct 

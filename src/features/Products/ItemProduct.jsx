@@ -4,6 +4,7 @@ import {
     PopoverContent,
     PopoverTrigger,
   } from "@/components/ui/popover"
+import formatPrice from "@/tools/utils/formatPrice"
 
 import { EllipsisVertical, Lock, Pencil, LockOpen } from "lucide-react"
 
@@ -25,11 +26,13 @@ export default function ItemProduct({product, edit = () => {}, inactive = () => 
             <div class="flex items-center gap-2 w-full md:w-4/12 my-3 md:my-0">
                 <div className={`${getStatus()} text-sm`}>{product.deletedAt ? "Inativo" : "Ativo"}</div>
             </div>
-            <div class="flex items-center gap-2 w-full md:w-4/12 my-3 md:my-0">
-                <p className="text-sm font-semibold">Estoque: {product.amount}</p>
+            <div class="flex items-center gap-2 w-full md:w-7/12 my-3 md:my-0">
+                <span className="text-sm font-semibold">Estoque:</span>
+                <span className="text-sm font-semibold">{product.amount}</span>
             </div>
             <div class="flex items-center gap-2 w-full md:w-4/12 my-3 md:my-0">
-                <p className="text-sm font-semibold">Preço: {product.amount}</p>
+                <span className="text-sm font-semibold">Preço:</span>
+                <span className="text-sm font-semibold">${formatPrice(product.price)}</span>
             </div>
             <div class="flex justify-end md:pr-3 w-full md:w-1/12 my-3 md:my-0">
                 <Popover>
