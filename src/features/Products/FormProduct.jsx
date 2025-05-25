@@ -7,14 +7,27 @@ import {
     FormField,
     FormItem,
     FormLabel,
+    FormMessage,
 } from "@/components/ui/form"
 import { Input } from '@/components/ui/input'
 import { MaskInput } from '@/components/inputs/maskInput'
 
-export default function FormProduct({onClose = () => {}, onSubmit = () => {}, entity}) {
+export default function FormProduct({onClose = () => {}, onSubmit = () => {}, entity, editProduct, onEditSubmit = () => {}}) {
     const form = useForm({
         resolver: zodResolver(productSchema),
     })
+
+    const initialValues = editProduct ? editProduct : {};
+    
+    if (initialValues) {        
+        Object.keys(initialValues).forEach(key => {
+            if (key === "amount" || key === "price") {
+                form.setValue(key, String(initialValues[key]));
+            } else {
+                form.setValue(key, initialValues[key]);
+            }
+        })
+    }
 
     return (
         <>
@@ -24,7 +37,7 @@ export default function FormProduct({onClose = () => {}, onSubmit = () => {}, en
                     <div className="flex flex-col items-center justify-center gap-4 text-center">
                         <p className="text-lg font-semibold">Formulário de {entity}</p>
                         <Form {...form}>
-                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                            <form onSubmit={form.handleSubmit(editProduct ? onEditSubmit : onSubmit)} className="space-y-8">
                                 <FormField
                                     control={form.control}
                                     name="name"
@@ -46,6 +59,7 @@ export default function FormProduct({onClose = () => {}, onSubmit = () => {}, en
                                             <FormControl>
                                                 <MaskInput placeholder="Estoque" dataMaska='000' className="border-2 border-solid" {...field} />
                                             </FormControl>
+                                            <FormMessage />
                                         </FormItem>
                                     )}
                                 />
@@ -58,6 +72,7 @@ export default function FormProduct({onClose = () => {}, onSubmit = () => {}, en
                                             <FormControl>
                                                 <MaskInput placeholder="Preço" money {...field} />
                                             </FormControl>
+                                            <FormMessage />
                                         </FormItem>
                                     )}
                                 />
@@ -72,7 +87,7 @@ export default function FormProduct({onClose = () => {}, onSubmit = () => {}, en
                                         className="px-4 py-2 bg-green-600 text-white rounded cursor-pointer hover:bg-green-900"
                                         type='submit'
                                     >
-                                        Salvar
+                                        {editProduct ? "Salvar" : "Adicionar"}
                                     </button>
                                 </div>
                             </form>

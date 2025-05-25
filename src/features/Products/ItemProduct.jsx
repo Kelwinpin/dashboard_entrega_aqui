@@ -7,7 +7,7 @@ import {
 
 import { EllipsisVertical, Lock, Pencil, LockOpen } from "lucide-react"
 
-export default function ItemProduct({product}) {
+export default function ItemProduct({product, edit = () => {}, inactive = () => {}, reactivate = () => {}}) {
 
     const getStatus = () => {
         if (product.deletedAt) {
@@ -43,6 +43,7 @@ export default function ItemProduct({product}) {
                             <li className="hover:bg-gray-300 cursor-pointer">
                                 <Button
                                     class="flex items-center space-x-3 p-3 cursor-pointer"
+                                    onClick={() => edit(product)}
                                 >
                                     <Pencil className="text-gray-400" />
                                     <div class="text-sm font-medium text-gray-700">Editar</div>
@@ -52,6 +53,7 @@ export default function ItemProduct({product}) {
                             <li className="hover:bg-gray-300 cursor-pointer">
                                 <Button
                                     class="flex items-center space-x-3 p-3 cursor-pointer"
+                                    onClick={() => inactive(product.id)}
                                 >
                                     <Lock className="text-gray-400" />
                                     <div class="text-sm font-medium text-gray-700">Inativar</div>
@@ -61,6 +63,7 @@ export default function ItemProduct({product}) {
                             <li className="hover:bg-gray-300 cursor-pointer">
                                 <Button
                                     class="flex items-center space-x-3 p-3 cursor-pointer"
+                                    onClick={() => reactivate(product.id)}
                                 >
                                     <LockOpen className="text-gray-400" />
                                     <div class="text-sm font-medium text-gray-700">Reativar</div>
