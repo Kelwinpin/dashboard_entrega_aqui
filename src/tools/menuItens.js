@@ -1,4 +1,4 @@
-import { Home } from "lucide-react"
+import { Home, Apple } from "lucide-react"
 
 const menuItems = [
     {
@@ -9,7 +9,7 @@ const menuItems = [
     {
       title: "Produtos",
       url: "/produtos",
-      icon: Home,
+      icon: Apple,
     },
 ]
 

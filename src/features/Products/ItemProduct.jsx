@@ -18,7 +18,7 @@ export default function ItemProduct({product, edit = () => {}, inactive = () => 
     }
 
     return (
-        <div class="bg-white p-4 rounded-lg md:flex justify-between gap-4 md:items-center border border-solid border-gray-300 shadow-md shadow-black">
+        <div class="bg-white p-4 rounded-lg md:flex justify-between lg:gap-48 md:items-center border border-solid border-gray-300 shadow-md shadow-black">
             <div class="flex flex-col md:flex-row md:items-center w-full md:w-4/12 my-3 md:my-0">
                 <p className="text-lg font-semibold">{product.name}</p>
             </div>
@@ -45,7 +45,7 @@ export default function ItemProduct({product, edit = () => {}, inactive = () => 
                                     class="flex items-center space-x-3 p-3 cursor-pointer"
                                     onClick={() => edit(product)}
                                 >
-                                    <Pencil className="text-gray-400" />
+                                    <Pencil className="text-blue-400" />
                                     <div class="text-sm font-medium text-gray-700">Editar</div>
                                 </Button>
                                 <hr class="border-gray-300" />
@@ -55,7 +55,7 @@ export default function ItemProduct({product, edit = () => {}, inactive = () => 
                                     class="flex items-center space-x-3 p-3 cursor-pointer"
                                     onClick={() => inactive(product.id)}
                                 >
-                                    <Lock className="text-gray-400" />
+                                    <Lock className="text-red-400" />
                                     <div class="text-sm font-medium text-gray-700">Inativar</div>
                                 </Button>
                                 <hr class="border-gray-300" />
@@ -65,7 +65,7 @@ export default function ItemProduct({product, edit = () => {}, inactive = () => 
                                     class="flex items-center space-x-3 p-3 cursor-pointer"
                                     onClick={() => reactivate(product.id)}
                                 >
-                                    <LockOpen className="text-gray-400" />
+                                    <LockOpen className="text-green-600" />
                                     <div class="text-sm font-medium text-gray-700">Reativar</div>
                                 </Button>
                                 <hr class="border-gray-300" />
