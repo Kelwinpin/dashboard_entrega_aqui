@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import productSchema from "../../tools/schemas/product"
 import {
     Form,
@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from '@/components/ui/input'
 import { MaskInput } from '@/components/inputs/maskInput'
+import Dropzone from '@/components/dropzone'
 
 export default function FormProduct({onClose = () => {}, onSubmit = () => {}, entity, editProduct, onEditSubmit = () => {}, isOpen = false}) {
     const form = useForm({
@@ -33,7 +34,7 @@ export default function FormProduct({onClose = () => {}, onSubmit = () => {}, en
         <>
             {/* Overlay */}
             <div 
-                className={`fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-40 transition-opacity duration-300 ${
+                className={`fixed inset-0 bg-opacity-80 backdrop-blur-sm z-40 transition-opacity duration-300 ${
                     isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
                 }`}
                 onClick={onClose}
@@ -112,6 +113,20 @@ export default function FormProduct({onClose = () => {}, onSubmit = () => {}, en
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
+                                    )}
+                                />  
+                                <Controller
+                                    name="image"
+                                    control={form.control}
+                                    render={({ field }) => (
+                                        <Dropzone
+                                            onFilesChange={(files) => {                                                
+                                                field.onChange(files);
+                                                form.setValue('image', files, { shouldValidate: true });
+                                            }}
+                                            maxFiles={1}
+                                            maxSize={10 * 1024 * 1024}
+                                        />
                                     )}
                                 />
                             </form>
