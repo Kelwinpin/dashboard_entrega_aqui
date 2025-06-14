@@ -44,14 +44,15 @@ export default function Products() {
            toast.success("Produto editado com sucesso");
            setIsOpen(false);
            setEditProduct(null);
+           await refetch();
        } else {
-           toast.error("Erro ao cadastrar produto");
+           toast.error("Erro ao editar produto");
        }
     }
 
     const edit = (product) => {
-        setIsOpen(true);
         setEditProduct(product);
+        setIsOpen(true);
     }
 
     const handleDelete = async(id) => {
@@ -76,16 +77,21 @@ export default function Products() {
         }
     }
 
+    const handleClose = () => {
+        setIsOpen(false);
+        setEditProduct(null);
+    }
+
     useEffect(() => {        
         refetch();
     },[isOpen, refetch]);
     
     return (
         isLoadingProducts ? <Loader /> :
-        <div class="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-8">
            <Header entity="produto" search={() => {}} add={() => setIsOpen(true)} />
             
-            <div class="space-y-4 mt-3">
+            <div className="space-y-4 mt-3">
                 {products && products.rows.map(product => 
                     <ItemProduct 
                         key={product.id} 
@@ -96,19 +102,16 @@ export default function Products() {
                     />
                 )}
             </div>
-            {
-                isOpen && 
-                <FormProduct 
-                    onClose={() => {
-                        setIsOpen(false); 
-                        setEditProduct(null);
-                    }} 
-                    entity="produto" 
-                    onSubmit={onSubmit} 
-                    editProduct={editProduct} 
-                    onEditSubmit={onEditSubmit} 
-                />
-            }
+            
+            {/* Sempre renderiza o FormProduct, mas controla visibilidade com isOpen */}
+            <FormProduct 
+                isOpen={isOpen}
+                onClose={handleClose} 
+                entity="produto" 
+                onSubmit={onSubmit} 
+                editProduct={editProduct} 
+                onEditSubmit={onEditSubmit} 
+            />
         </div>
     )
 }

@@ -12,7 +12,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { MaskInput } from '@/components/inputs/maskInput'
 
-export default function FormProduct({onClose = () => {}, onSubmit = () => {}, entity, editProduct, onEditSubmit = () => {}}) {
+export default function FormProduct({onClose = () => {}, onSubmit = () => {}, entity, editProduct, onEditSubmit = () => {}, isOpen = false}) {
     const form = useForm({
         resolver: zodResolver(productSchema),
     })
@@ -31,13 +31,38 @@ export default function FormProduct({onClose = () => {}, onSubmit = () => {}, en
 
     return (
         <>
-            <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-40" />
-                <div className="fixed inset-0 flex items-center justify-center z-50">
-                <div className="bg-white rounded-2xl p-8 shadow-lg max-w-md w-full">
-                    <div className="flex flex-col items-center justify-center gap-4 text-center">
-                        <p className="text-lg font-semibold">Formulário de {entity}</p>
+            {/* Overlay */}
+            <div 
+                className={`fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-40 transition-opacity duration-300 ${
+                    isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                }`}
+                onClick={onClose}
+            />
+            
+            {/* Sidebar */}
+            <div className={`fixed top-0 right-0 h-full w-96 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
+                isOpen ? 'translate-x-0' : 'translate-x-full'
+            }`}>
+                <div className="flex flex-col h-full">
+                    {/* Header */}
+                    <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                        <h2 className="text-xl font-semibold text-gray-800">
+                            Formulário de {entity}
+                        </h2>
+                        <button
+                            onClick={onClose}
+                            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                        >
+                            <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    {/* Form Content */}
+                    <div className="flex-1 overflow-y-auto p-6">
                         <Form {...form}>
-                            <form onSubmit={form.handleSubmit(editProduct ? onEditSubmit : onSubmit)} className="space-y-8">
+                            <form onSubmit={form.handleSubmit(editProduct ? onEditSubmit : onSubmit)} className="space-y-6">
                                 <FormField
                                     control={form.control}
                                     name="name"
@@ -45,7 +70,11 @@ export default function FormProduct({onClose = () => {}, onSubmit = () => {}, en
                                         <FormItem>
                                             <FormLabel>Nome</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="Nome" className="border border-solid border-primary" {...field} />
+                                                <Input 
+                                                    placeholder="Nome" 
+                                                    className="border border-solid border-primary" 
+                                                    {...field} 
+                                                />
                                             </FormControl>
                                         </FormItem>
                                     )}
@@ -57,7 +86,12 @@ export default function FormProduct({onClose = () => {}, onSubmit = () => {}, en
                                         <FormItem>
                                             <FormLabel>Estoque</FormLabel>
                                             <FormControl>
-                                                <MaskInput placeholder="Estoque" dataMaska='000' className="border-2 border-solid" {...field} />
+                                                <MaskInput 
+                                                    placeholder="Estoque" 
+                                                    dataMaska='000' 
+                                                    className="border-2 border-solid" 
+                                                    {...field} 
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -70,28 +104,38 @@ export default function FormProduct({onClose = () => {}, onSubmit = () => {}, en
                                         <FormItem>
                                             <FormLabel>Preço</FormLabel>
                                             <FormControl>
-                                                <MaskInput placeholder="Preço" money {...field} />
+                                                <MaskInput 
+                                                    placeholder="Preço" 
+                                                    money 
+                                                    {...field} 
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
                                     )}
                                 />
-                                <div className="flex justify-center items-center gap-12">
-                                    <button
-                                        className="px-4 py-2 bg-red-600 text-white rounded cursor-pointer hover:bg-red-900"
-                                        onClick={() => onClose()}
-                                    >
-                                        Fechar
-                                    </button>
-                                    <button
-                                        className="px-4 py-2 bg-green-600 text-white rounded cursor-pointer hover:bg-green-900"
-                                        type='submit'
-                                    >
-                                        {editProduct ? "Salvar" : "Adicionar"}
-                                    </button>
-                                </div>
                             </form>
                         </Form>
+                    </div>
+
+                    {/* Footer with buttons */}
+                    <div className="border-t border-gray-200 p-6">
+                        <div className="flex justify-end gap-3">
+                            <button
+                                className="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
+                                onClick={onClose}
+                                type="button"
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                                type="submit"
+                                onClick={form.handleSubmit(editProduct ? onEditSubmit : onSubmit)}
+                            >
+                                {editProduct ? "Salvar" : "Adicionar"}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
