@@ -9,10 +9,8 @@ export default function Header({ entity = "", add = () => {}, onChange = () => {
     const [searchValue, setSearchValue] = useState("");
     const inputRef = useRef(null);
 
-    // Debounce da pesquisa com 500ms de delay
     const debouncedSearchValue = useDebounce(searchValue, 500);
 
-    // Executa a busca quando o valor debounced muda
     useEffect(() => {
         onChange(debouncedSearchValue);
     }, [debouncedSearchValue, onChange]);
@@ -36,7 +34,6 @@ export default function Header({ entity = "", add = () => {}, onChange = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-                {/* Campo de pesquisa com indicadores visuais */}
                 <div className="relative flex-1 md:w-80">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         {isSearching ? (
@@ -65,7 +62,6 @@ export default function Header({ entity = "", add = () => {}, onChange = () => {
                     )}
                 </div>
 
-                {/* Botão de adicionar */}
                 <Button 
                     onClick={add}
                     className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg transition-colors duration-200 flex items-center space-x-2 whitespace-nowrap"
