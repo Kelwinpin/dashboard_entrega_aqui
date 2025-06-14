@@ -12,7 +12,11 @@ const axiosInstance = axios.create({
 });
 
 const services = {
-    get: (url, config = {}) => {
+    get: (url,params, config = {}) => {
+        if (params) {
+            url = `${url}?${new URLSearchParams(params)}`;
+        }
+
         return axiosInstance.get(url, { ...configDefault, ...config });
     },
     post: (url, data, config = {}) => {

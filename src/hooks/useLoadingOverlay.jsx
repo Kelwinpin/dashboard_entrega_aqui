@@ -10,7 +10,6 @@ const LoadingOverlay = ({
   variant = "spinner",
   size = "lg",
   showText = true,
-  backdrop = "default",
   preventClose = false,
   className,
   overlayClassName,
@@ -42,14 +41,6 @@ const LoadingOverlay = ({
 
   if (!open) return null;
 
-  const backdropClasses = {
-    default: "bg-background/80 backdrop-blur-sm",
-    dark: "bg-black/50 backdrop-blur-sm",
-    light: "bg-white/80 backdrop-blur-sm",
-    blur: "bg-background/60 backdrop-blur-md",
-    solid: "bg-background"
-  };
-
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget && !preventClose) {
       onClose?.();
@@ -61,7 +52,7 @@ const LoadingOverlay = ({
       className={cn(
         "fixed inset-0 z-50 flex items-center justify-center",
         "animate-in fade-in-0 duration-200",
-        backdropClasses[backdrop],
+        "bg-background/80 backdrop-blur-sm",
         overlayClassName
       )}
       onClick={handleBackdropClick}
