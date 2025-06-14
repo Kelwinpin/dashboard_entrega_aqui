@@ -28,6 +28,13 @@ const services = {
     delete: (url, config = {}) => {
         return axiosInstance.delete(url, { ...configDefault, ...config });
     },
+    upload: (url, data) => {
+        return axiosInstance.post(`upload/${url}`, data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+    },
 };
 
 export default services;

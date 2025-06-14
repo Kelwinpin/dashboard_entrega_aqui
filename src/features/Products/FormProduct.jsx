@@ -12,6 +12,11 @@ import {
 import { Input } from '@/components/ui/input'
 import { MaskInput } from '@/components/inputs/maskInput'
 import Dropzone from '@/components/dropzone'
+import { storage } from "@/tools/storage"
+import services from "@/tools/services"
+import { toast } from "react-toastify"
+import { useCallback } from "react"
+import { useQueryClient } from "@tanstack/react-query"
 
 export default function FormProduct({onClose = () => {}, onSubmit = () => {}, entity, editProduct, onEditSubmit = () => {}, isOpen = false}) {
     const form = useForm({
@@ -29,6 +34,55 @@ export default function FormProduct({onClose = () => {}, onSubmit = () => {}, en
             }
         })
     }
+
+    const queryClient = useQueryClient();
+
+    const invalidateAndRefetch = useCallback(async () => {
+        await queryClient.invalidateQueries({ queryKey: ["products"] });
+    }, [queryClient]);
+
+    const handleImageChange = useCallback(async (files) => {
+        if (files.length === 0) return;
+        
+        const file = files[0];
+        
+        if (!file) {
+            toast.error("Nenhum arquivo selecionado");
+            return;
+        }
+        
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        if (!allowedTypes.includes(file.type)) {
+            toast.error("Tipo de arquivo não suportado. Use JPEG, PNG, GIF ou WebP");
+            return;
+        }
+        
+        const maxSize = 5 * 1024 * 1024;
+        if (file.size > maxSize) {
+            toast.error("Arquivo muito grande. Tamanho máximo: 5MB");
+            return;
+        }
+        
+        const formData = new FormData();
+        formData.append("file", file);
+        
+        const companyId = storage.getDecodedToken().company.id;
+        
+        try {        
+            const response = await services.upload(`${entity}/${companyId}`, formData);
+            
+            if (response.status === 200) {
+                toast.success("Imagem enviada com sucesso!");
+                form.setValue('image', response.data, { shouldValidate: true });
+                await invalidateAndRefetch();
+            } else {
+                toast.error("Erro ao enviar imagem");
+            }   
+        } catch (error) {
+            console.error("Erro ao atualizar imagem:", error);
+            toast.error("Erro inesperado ao enviar imagem");
+        }
+    }, [entity, form]);
 
     return (
         <>
@@ -115,17 +169,17 @@ export default function FormProduct({onClose = () => {}, onSubmit = () => {}, en
                                         </FormItem>
                                     )}
                                 />  
-                                <Controller
+                          <Controller
                                     name="image"
                                     control={form.control}
                                     render={({ field }) => (
                                         <Dropzone
-                                            onFilesChange={(files) => {                                                
-                                                field.onChange(files);
-                                                form.setValue('image', files, { shouldValidate: true });
+                                            onFilesChange={(files) => {
+                                                handleImageChange(files);
                                             }}
                                             maxFiles={1}
                                             maxSize={10 * 1024 * 1024}
+                                            value={field.value}
                                         />
                                     )}
                                 />

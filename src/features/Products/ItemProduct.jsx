@@ -133,9 +133,9 @@ export default function ItemProduct({
             <div className="hidden md:flex items-center justify-between p-4 hover:bg-gray-50 transition-colors duration-150">
                  <div className="flex-1 min-w-0 pr-4">
                   {
-                    product.image && product.image.length > 0 ? (
+                    product.image ? (
                       <div className="flex items-center justify-center">
-                        <img src={product.image[0]} alt="Produto" className="h-16 w-16 rounded-lg" />
+                        <img src={product.image} alt="Produto" className="h-16 w-16 rounded-lg" />
                       </div>
                     ) : (
                       <div className="flex items-center justify-center border border-solid border-gray-200 rounded-lg">
