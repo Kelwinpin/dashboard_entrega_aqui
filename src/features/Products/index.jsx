@@ -6,15 +6,24 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify"
 import Loader from "@/components/loader";
 import ItemProduct from "./ItemProduct";
+import { LoadingOverlay, useLoadingOverlay } from '@/hooks/useLoadingOverlay';
 
 export default function Products() {
     const entityName = "products";
+      const { isLoading, showLoading, hideLoading } = useLoadingOverlay();
 
-    const { data: products, isLoading: isLoadingProducts, refetch } = useQuery({
+    const { data: products, refetch } = useQuery({
         queryKey: ["products"],
         queryFn: async () => {
-            const response = await services.get("/products");
-            return response.data;
+            try {
+                showLoading();
+                const response = await services.get("/products");
+                return response.data;
+            } catch (error) {
+                console.log(error);
+            } finally {
+                hideLoading();
+            }
         },
     })
 
@@ -22,32 +31,46 @@ export default function Products() {
     const [editProduct, setEditProduct] = useState(null);
 
     const onSubmit = async(values) => {
-       values.amount = Number(values.amount);
-       values.price = Number(values.price);
-       const response = await services.post(`/${entityName}`, values);
+        try {
+            showLoading();
+            values.amount = Number(values.amount);
+            values.price = Number(values.price);
+            const response = await services.post(`/${entityName}`, values);
 
-       if (response.status === 200) {
-           toast.success("Produto cadastrado com sucesso");
-           setIsOpen(false);
-           await refetch();
-       } else {
-           toast.error("Erro ao cadastrar produto");
-       }
+            if (response.status === 200) {
+                toast.success("Produto cadastrado com sucesso");
+                setIsOpen(false);
+                await refetch();
+            } else {
+                toast.error("Erro ao cadastrar produto");
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            hideLoading();
+        }
     }
 
     const onEditSubmit = async(values) => {
-       values.amount = Number(values.amount);
-       values.price = Number(values.price);
-       const response = await services.put(`/${entityName}/${editProduct.id}`, values);
+        try {
+            showLoading();
+            values.amount = Number(values.amount);
+            values.price = Number(values.price);
+            const response = await services.put(`/${entityName}/${editProduct.id}`, values);
 
-       if (response.status === 200) {
-           toast.success("Produto editado com sucesso");
-           setIsOpen(false);
-           setEditProduct(null);
-           await refetch();
-       } else {
-           toast.error("Erro ao editar produto");
-       }
+            if (response.status === 200) {
+                toast.success("Produto editado com sucesso");
+                setIsOpen(false);
+                setEditProduct(null);
+                await refetch();
+            } else {
+                toast.error("Erro ao editar produto");
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            hideLoading();
+        }
     }
 
     const edit = (product) => {
@@ -56,24 +79,38 @@ export default function Products() {
     }
 
     const handleDelete = async(id) => {
-        const response = await services.delete(`/${entityName}/${id}`);
+        try {
+            showLoading();
+            const response = await services.delete(`/${entityName}/${id}`);
 
-        if (response.status === 200) {
-            toast.success("Produto inativo com sucesso");
-            refetch();
-        } else {
-            toast.error("Erro ao inativar produto");
+            if (response.status === 200) {
+                toast.success("Produto inativo com sucesso");
+                refetch();
+            } else {
+                toast.error("Erro ao inativar produto");
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            hideLoading();
         }
     }
 
     const handleReactivate = async(id) => {
-        const response = await services.put(`/${entityName}/reactive/${id}`);
+        try {
+            showLoading();
+            const response = await services.put(`/${entityName}/reactive/${id}`);
 
-        if (response.status === 200) {
-            toast.success("Produto reativado com sucesso");
-            refetch();
-        } else {
-            toast.error("Erro ao reativar produto");
+            if (response.status === 200) {
+                toast.success("Produto reativado com sucesso");
+                refetch();
+            } else {
+                toast.error("Erro ao reativar produto");
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            hideLoading();
         }
     }
 
@@ -87,7 +124,15 @@ export default function Products() {
     },[isOpen, refetch]);
     
     return (
-        isLoadingProducts ? <Loader /> :
+        isLoading ?       
+        <LoadingOverlay
+            open={isLoading}
+            onClose={hideLoading}
+            text=""
+            variant="dots"
+            backdrop="default"
+        /> 
+        :
         <div className="container mx-auto px-4 py-8">
            <Header entity="produto" search={() => {}} add={() => setIsOpen(true)} />
             
