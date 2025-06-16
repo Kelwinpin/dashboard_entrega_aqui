@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { PlusCircle } from "lucide-react"
-import { Search, RefreshCw, Package } from "lucide-react"
+import { Search, RefreshCw, Settings } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import useDebounce from "@/hooks/useDebounce"
 
@@ -27,7 +27,7 @@ export default function Header({ entity = "", add = () => {}, onChange = () => {
     return (
         <header className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
             <div className="flex items-center space-x-3 mb-2 md:mb-0">
-                <Package className="h-6 w-6 text-blue-600" />
+                <Settings className="h-6 w-6 text-blue-600" />
                 <h1 className="text-2xl font-bold text-gray-900 capitalize">
                     Gerenciar {entity}s
                 </h1>
