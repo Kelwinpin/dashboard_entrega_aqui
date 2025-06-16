@@ -2,7 +2,7 @@ import Header from "@/components/header";
 import services from "@/tools/services";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import FormProduct from "./FormProduct";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { toast } from "react-toastify"
 import ItemProduct from "./ItemProduct";
 import { LoadingOverlay, useLoadingOverlay } from '@/hooks/useLoadingOverlay';
@@ -17,6 +17,7 @@ export default function Products() {
     const [isOpen, setIsOpen] = useState(false);
     const [editProduct, setEditProduct] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
+    const [itensPerPage, setItensPerPage] = useState(10);
 
     const { 
         data: products, 
@@ -31,7 +32,7 @@ export default function Products() {
             const response = await services.get("/products", {
                 name: searchTerm,
                 page: 1,
-                itensPerPage: 10,
+                itensPerPage: itensPerPage,
             });
             return response.data;
         },
@@ -41,6 +42,10 @@ export default function Products() {
         enabled: true,
         keepPreviousData: true,
     });
+
+    useEffect(() => {
+        refetch();
+    }, [itensPerPage, refetch]);
 
     const handleSearchChange = useCallback((term) => {
         setSearchTerm(term);
@@ -185,6 +190,7 @@ export default function Products() {
                     onChange={handleSearchChange}
                     add={() => setIsOpen(true)}
                     isSearching={isFetching}
+                    setItensPerPage={setItensPerPage}
                 />
                 
                 {searchTerm && (

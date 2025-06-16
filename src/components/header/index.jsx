@@ -5,7 +5,7 @@ import { Search, RefreshCw, Package } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import useDebounce from "@/hooks/useDebounce"
 
-export default function Header({ entity = "", add = () => {}, onChange = () => {}, isSearching = false }) {
+export default function Header({ entity = "", add = () => {}, onChange = () => {}, isSearching = false, setItensPerPage = () => {} }) {
     const [searchValue, setSearchValue] = useState("");
     const inputRef = useRef(null);
 
@@ -31,6 +31,17 @@ export default function Header({ entity = "", add = () => {}, onChange = () => {
                 <h1 className="text-2xl font-bold text-gray-900 capitalize">
                     Gerenciar {entity}s
                 </h1>
+                <select 
+                    name="itensPerPage" 
+                    id="itensPerPage" 
+                    className="border border-blue-300 text-gray-600 py-1 px-2 rounded-lg"
+                    onChange={(e) => setItensPerPage(e.target.value)}
+                >
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
