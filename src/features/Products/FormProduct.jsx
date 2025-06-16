@@ -82,7 +82,7 @@ export default function FormProduct({onClose = () => {}, onSubmit = () => {}, en
             console.error("Erro ao atualizar imagem:", error);
             toast.error("Erro inesperado ao enviar imagem");
         }
-    }, [entity, form]);
+    }, [entity, form, invalidateAndRefetch]);
 
     return (
         <>

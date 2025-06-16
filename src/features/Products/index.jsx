@@ -7,7 +7,7 @@ import { toast } from "react-toastify"
 import ItemProduct from "./ItemProduct";
 import { LoadingOverlay, useLoadingOverlay } from '@/hooks/useLoadingOverlay';
 import { AlertCircle, RefreshCw, Search, PlusCircle, Package } from "lucide-react";
-
+import Pagination from "@/components/pagination";
 
 export default function Products() {
     const entityName = "products";
@@ -18,6 +18,8 @@ export default function Products() {
     const [editProduct, setEditProduct] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [itensPerPage, setItensPerPage] = useState(10);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pages, setPages] = useState(1);
 
     const { 
         data: products, 
@@ -31,9 +33,10 @@ export default function Products() {
         queryFn: async () => {
             const response = await services.get("/products", {
                 name: searchTerm,
-                page: 1,
+                page: currentPage,
                 itensPerPage: itensPerPage,
             });
+            setPages(response.data.pages);
             return response.data;
         },
         staleTime: 30 * 1000,
@@ -45,7 +48,7 @@ export default function Products() {
 
     useEffect(() => {
         refetch();
-    }, [itensPerPage, refetch]);
+    }, [itensPerPage, refetch, currentPage]);
 
     const handleSearchChange = useCallback((term) => {
         setSearchTerm(term);
@@ -252,7 +255,13 @@ export default function Products() {
                         )}
                     </div>
                 )}
+
             </div>
+            <Pagination
+                total={pages} 
+                currentPage={currentPage}
+                onChange={setCurrentPage}
+            />
             
             <FormProduct 
                 isOpen={isOpen}
